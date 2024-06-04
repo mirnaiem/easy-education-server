@@ -20,7 +20,6 @@ const client = new MongoClient(uri, {
 });
 async function run() {
   try {
-    // await client.connect();
 const easyEducationDB=client.db('easyEducation');
 const coursesCollection=easyEducationDB.collection('coursesCollection');
 const usersCollection=easyEducationDB.collection('usersCollection');

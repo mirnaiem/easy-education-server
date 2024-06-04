@@ -81,18 +81,28 @@ app.get('/users', async(req,res)=>{
   res.send(result)
 })
 
-app.get('/users/:email',async(req,res)=>{
-const email=req.params.email;
-console.log(email);
-const result=await usersCollection.findOne({email})
-res.send(result)
-})
 app.get('/users/get/:id',async(req,res)=>{
 const id=req.params.id;
 const result=await usersCollection.findOne({_id: new ObjectId(id)})
 res.send(result)
 })
+app.get('/users/:email',async(req,res)=>{
+const email=req.params.email;
+const result=await usersCollection.findOne({email})
+res.send(result)
+})
 
+app.patch('/users/:email', async (req, res) => {
+  
+  const email = req.params.email;
+  const updatedData=req.body;
+  const courseData = await coursesCollection.updateOne(
+    { email},
+    {$set:updatedData},
+    {upsert:true}
+);
+  res.send(courseData)
+});
 
     console.log("database is connected");
   } finally {

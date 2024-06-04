@@ -65,7 +65,7 @@ app.patch('/courses/:id', async (req, res) => {
 // user data
 app.post('/users',async(req,res)=>{
   const user=req.body;
-  const isUserExist=await usersCollection.findOne({'email':user?.email});
+  const isUserExist=await usersCollection.findOne({email:user?.email});
   if(!isUserExist){
     const result=await usersCollection.insertOne(user);
     res.send(result)

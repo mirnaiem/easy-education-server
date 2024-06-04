@@ -87,6 +87,11 @@ console.log(email);
 const result=await usersCollection.findOne({email})
 res.send(result)
 })
+app.get('/users/get/:id',async(req,res)=>{
+const id=req.params.id;
+const result=await usersCollection.findOne({_id: new ObjectId(id)})
+res.send(result)
+})
 
 
     console.log("database is connected");

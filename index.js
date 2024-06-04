@@ -23,6 +23,7 @@ async function run() {
     // await client.connect();
 const easyEducationDB=client.db('easyEducation');
 const coursesCollection=easyEducationDB.collection('coursesCollection');
+const usersCollection=easyEducationDB.collection('usersCollection');
 
 // course data
 app.post('/courses',async(req,res)=>{
@@ -61,7 +62,12 @@ app.patch('/courses/:id', async (req, res) => {
     res.send(courseData)
 });
 
-
+// user data
+app.post('/users',async(req,res)=>{
+  const user=req.body;
+  const result=await usersCollection.insertOne(user);
+  res.send(result)
+})
 
     console.log("database is connected");
   } finally {

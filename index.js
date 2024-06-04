@@ -75,12 +75,18 @@ app.post('/users',async(req,res)=>{
   res.send(result)
   
 })
-
 app.get('/users', async(req,res)=>{
   const courseData=usersCollection.find();
   const result=await courseData.toArray()
   res.send(result)
 })
+
+app.get('/users/:email',async(req,res)=>{
+const email=req.body.email;
+const result=await usersCollection.findOne({email:email})
+res.send(result)
+})
+
 
     console.log("database is connected");
   } finally {

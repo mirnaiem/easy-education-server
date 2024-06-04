@@ -96,7 +96,7 @@ app.patch('/users/:email', async (req, res) => {
   
   const email = req.params.email;
   const updatedData=req.body;
-  const courseData = await coursesCollection.updateOne(
+  const courseData = await usersCollection.updateOne(
     { email},
     {$set:updatedData},
     {upsert:true}

@@ -77,6 +77,12 @@ app.post('/users',async(req,res)=>{
   
 })
 
+app.get('/users', async(req,res)=>{
+  const courseData=usersCollectionCollection.find();
+  const result=await courseData.toArray()
+  res.send(result)
+})
+
     console.log("database is connected");
   } finally {
   }

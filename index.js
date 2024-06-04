@@ -65,8 +65,12 @@ app.patch('/courses/:id', async (req, res) => {
 // user data
 app.post('/users',async(req,res)=>{
   const user=req.body;
-  const result=await usersCollection.insertOne(user);
-  res.send(result)
+  const isUserExist=await usersCollection.findOne({'email':user?.email});
+  if(!isUserExist){
+    const result=await usersCollection.insertOne(user);
+    res.send(result)
+  }
+  
 })
 
     console.log("database is connected");

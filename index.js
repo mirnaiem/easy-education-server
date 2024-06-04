@@ -66,10 +66,14 @@ app.patch('/courses/:id', async (req, res) => {
 app.post('/users',async(req,res)=>{
   const user=req.body;
   const isUserExist=await usersCollection.findOne({email:user?.email});
-  if(!isUserExist){
-    const result=await usersCollection.insertOne(user);
-    res.send(result)
+  if(isUserExist?._id){
+   return res.send({
+    status:'success',
+    message:"login success"
+   })
   }
+  const result=await usersCollection.insertOne(user);
+  res.send(result)
   
 })
 

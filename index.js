@@ -83,7 +83,7 @@ app.get('/users', async(req,res)=>{
 
 app.get('/users/:email',async(req,res)=>{
 const email=req.body.email;
-const result=await usersCollection.findOne({email:email})
+const result=await usersCollection.findOne({email})
 res.send(result)
 })
 

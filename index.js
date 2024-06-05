@@ -8,6 +8,15 @@ const port = process.env.PORT || 3000;
 app.use(cors())
 app.use(express.json())
 
+function createToken(user){
+ const token= jwt.sign(
+    {
+    email: user.email
+  }, 
+  'secret', 
+  { expiresIn: '1h' });
+  return token
+}
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@easy-education.2faznqa.mongodb.net/?retryWrites=true&w=majority&appName=easy-education`;
 
@@ -64,15 +73,17 @@ app.patch('/courses/:id', async (req, res) => {
 // user data
 app.post('/users',async(req,res)=>{
   const user=req.body;
+  const token=createToken(user)
   const isUserExist=await usersCollection.findOne({email:user?.email});
   if(isUserExist?._id){
    return res.send({
     status:'success',
-    message:"login success"
+    message:"login success",
+    token
    })
   }
-  const result=await usersCollection.insertOne(user);
-  res.send(result)
+  await usersCollection.insertOne(user);
+  res.send({token})
   
 })
 app.get('/users', async(req,res)=>{

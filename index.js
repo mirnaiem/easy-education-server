@@ -51,6 +51,8 @@ app.post('/courses',verifyToken,async(req,res)=>{
 })
 
 app.get('/courses', async(req,res)=>{
+  const search=req.query.search;
+  const query={title:{$regex:search, options:'i'}}
   const courseData=coursesCollection.find();
   const result=await courseData.toArray()
   res.send(result)

@@ -2,6 +2,7 @@ const express = require('express')
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const cors=require('cors')
 const dotenv = require('dotenv')
+const jwt=require('jsonwebtoken')
 dotenv.config();
 const app = express()
 const port = process.env.PORT || 3000;
@@ -74,6 +75,7 @@ app.patch('/courses/:id', async (req, res) => {
 app.post('/users',async(req,res)=>{
   const user=req.body;
   const token=createToken(user)
+  console.log(token);
   const isUserExist=await usersCollection.findOne({email:user?.email});
   if(isUserExist?._id){
    return res.send({

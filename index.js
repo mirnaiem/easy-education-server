@@ -18,6 +18,15 @@ function createToken(user){
   { expiresIn: '1h' });
   return token
 }
+function verifyToken(req,res,next){
+  const token=req.headers.authorization.split(' ')[1]
+  const verify=jwt.verify(token,'secret');
+  if(!verify?.email){
+    return res.send('You are not authorized')
+  }
+req.user=verify.email
+  next()
+}
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@easy-education.2faznqa.mongodb.net/?retryWrites=true&w=majority&appName=easy-education`;
 
@@ -35,7 +44,7 @@ const coursesCollection=easyEducationDB.collection('coursesCollection');
 const usersCollection=easyEducationDB.collection('usersCollection');
 
 // course data
-app.post('/courses',async(req,res)=>{
+app.post('/courses',verifyToken,async(req,res)=>{
   const courseData=req.body;
   const result= await coursesCollection.insertOne(courseData);
   res.send(result)  
@@ -60,7 +69,7 @@ app.delete('/courses/:id', async (req, res) => {
     res.send(courseData)
 });
 
-app.patch('/courses/:id', async (req, res) => {
+app.patch('/courses/:id',verifyToken, async (req, res) => {
   
     const courseId = req.params.id;
     const updatedData=req.body;
@@ -105,7 +114,7 @@ const result=await usersCollection.findOne({email})
 res.send(result)
 })
 
-app.patch('/users/:email', async (req, res) => {
+app.patch('/users/:email',verifyToken, async (req, res) => {
   
   const email = req.params.email;
   const updatedData=req.body;
